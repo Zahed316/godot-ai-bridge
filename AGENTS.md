@@ -2,11 +2,20 @@
 
 AI coding agents working in this repository must follow these rules:
 
+- Use minimum tokens.
+- Read `docs/AGENT_ROLES.md` before making changes.
+- Read `docs/API_BOUNDARIES.md` before implementing any tool.
 - Work phase by phase.
 - Do not implement unrequested phases.
 - Prefer small, focused changes.
 - Run checks after edits when a check is available.
 - End every future implementation phase with a local git commit and a remote push before moving on.
+- Do not implement a future phase unless explicitly requested.
+- Name which role you are acting as in your final report.
+- If agents are used, only one agent may be active at a time.
+- Wait for each agent result before activating another agent.
+- Agents must run available checks.
+- Agents must commit and push after accepted changes, following the required Git workflow.
 - Preserve the clean-room rules in `docs/CLEAN_ROOM.md`.
 - Never add dangerous tools without explicit approval.
 - Do not expose network services beyond localhost.

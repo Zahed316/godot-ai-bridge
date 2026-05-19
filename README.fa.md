@@ -4,6 +4,16 @@
 
 این نسخه فارسی است. نسخه انگلیسی: [README.md](README.md)
 
+## دانش پروژه
+
+پیش از پیاده‌سازی هر قابلیت، عامل‌ها باید این فایل‌ها را بخوانند:
+
+- `docs/GODOT_KNOWLEDGE.md`
+- `docs/MCP_KNOWLEDGE.md`
+- `docs/API_BOUNDARIES.md`
+- `docs/AGENT_ROLES.md`
+- `docs/NEXT_PHASES.md`
+
 معماری هدف:
 
 `Cursor` / `Claude` / `Codex` / `Cline` → MCP stdio server → localhost WebSocket → Godot Editor Plugin

@@ -7,6 +7,16 @@
 - [English](README.md)
 - [فارسی](README.fa.md)
 
+## Project Knowledge
+
+Before implementing any feature, agents must read:
+
+- `docs/GODOT_KNOWLEDGE.md`
+- `docs/MCP_KNOWLEDGE.md`
+- `docs/API_BOUNDARIES.md`
+- `docs/AGENT_ROLES.md`
+- `docs/NEXT_PHASES.md`
+
 Target architecture:
 
 `Cursor` / `Claude` / `Codex` / `Cline` -> MCP stdio server -> localhost WebSocket -> Godot Editor Plugin
