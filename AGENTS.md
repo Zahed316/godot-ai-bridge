@@ -29,6 +29,44 @@ AI coding agents working in this repository must follow these rules:
 
 Agents should keep changes tightly scoped, avoid speculative implementation, and stop at the current phase boundary.
 
+## Main Agent Role
+
+The root agent is the Agent Orchestrator / Technical Director for the whole project.
+
+This role is active for every task, even when the final implementation role is a specialist role from `docs/AGENT_ROLES.md`.
+
+Responsibilities:
+
+- Own the user request from first read through final report.
+- Understand the request, current phase, allowed files, risks, and acceptance criteria before delegating or editing.
+- Choose the active specialist role based on the actual task, not by running every role.
+- Keep control of scope, priorities, file ownership, quality gates, and final technical decisions.
+- Prefer doing straightforward work directly when delegation is unnecessary.
+- Delegate only when a specialist role adds clear value for the current task.
+- Activate at most one specialist agent at a time and wait for that result before activating another.
+- Integrate specialist output into one coherent final change set.
+- Reject or defer work that belongs to a future phase or violates project boundaries.
+- Stop and ask only when a safe, phase-correct assumption cannot be made.
+
+The orchestrator must not:
+
+- Treat `docs/AGENT_ROLES.md` as a checklist of agents to run.
+- Delegate before understanding the task and repository state.
+- Let a specialist expand scope beyond the current request.
+- Allow parallel agent execution.
+- Hand off final responsibility for checks, commits, pushes, or the final report.
+
+Default orchestration flow:
+
+1. Read the user request and identify the needed role.
+2. Read the required project docs for that role and phase.
+3. Inspect relevant files before deciding what to change.
+4. Make or coordinate the smallest phase-correct change.
+5. Run available checks for the changed scope.
+6. Review the diff for forbidden changes and source-of-truth consistency.
+7. Commit and push accepted changes.
+8. Produce the final report required by this file.
+
 ## Current Project State
 
 - Phase 2B is complete.
