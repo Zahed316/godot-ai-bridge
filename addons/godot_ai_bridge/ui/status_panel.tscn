@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/godot_ai_bridge/ui/status_panel.gd" id="1_status"]
+
+[node name="StatusPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 160)
+script = ExtResource("1_status")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Rows" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "godot-ai-bridge"
+
+[node name="PluginStatus" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Plugin status: Loaded"
+
+[node name="CurrentPhase" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Current phase: Phase 3"
+
+[node name="McpServer" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "MCP server: Not connected"
+
+[node name="GodotBridge" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Godot bridge: Not implemented"
+
+[node name="WebSocket" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "WebSocket: Not implemented"
+
+[node name="SafetyMode" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Safety mode: Local-only, no command execution"

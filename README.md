@@ -31,9 +31,9 @@ Before implementation, agents must follow:
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
-Current implementation status: Phase 2B provides a minimal MCP stdio server. It exposes only two safe read-only tools: `bridge.status` and `bridge.get_capabilities`.
+Current implementation status: Phase 3 provides a minimal MCP stdio server and a minimal Godot editor status panel. The MCP server exposes only two safe read-only bridge tools: `bridge.status` and `bridge.get_capabilities`.
 
-No Godot connection or WebSocket bridge exists yet.
+No WebSocket bridge exists yet. No command execution exists yet.
 
 The project now has compact official API indexes for Godot and MCP. These indexes link to official references and summarize project-specific guardrails without copying large documentation pages.
 
