@@ -24,10 +24,12 @@
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
-وضعیت فعلی پیاده‌سازی: فاز 2A فقط پایه بسته‌های TypeScript است. هنوز ابزارهای واقعی MCP یا اتصال به Godot وجود ندارد.
+وضعیت فعلی پیاده‌سازی: فاز 2B یک سرور حداقلی MCP stdio دارد. این سرور فقط دو ابزار امن و read-only ارائه می‌کند: `bridge.status` و `bridge.get_capabilities`.
+
+هنوز اتصال به Godot یا bridge وب‌سوکت وجود ندارد.
 
 معماری هدف:
 
 `Cursor` / `Claude` / `Codex` / `Cline` → MCP stdio server → localhost WebSocket → Godot Editor Plugin
 
-فاز 1 فقط bootstrap است. این مخزن در حال حاضر فقط ساختار، مستندات و قوانین عامل‌ها را تعریف می‌کند. هنوز سرور MCP، bridge وب‌سوکت، یا هر منطق خودکارسازی Godot پیاده‌سازی نشده است.
+این مخزن هنوز bridge وب‌سوکت یا هیچ منطق خودکارسازی Godot را پیاده‌سازی نکرده است.

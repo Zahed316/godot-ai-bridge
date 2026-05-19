@@ -13,7 +13,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.5"
+    "@godot-ai-bridge/protocol": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

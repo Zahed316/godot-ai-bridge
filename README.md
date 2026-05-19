@@ -27,10 +27,12 @@ Before implementation, agents must follow:
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
-Current implementation status: Phase 2A is only the TypeScript package foundation. No real MCP tools or Godot connection exist yet.
+Current implementation status: Phase 2B provides a minimal MCP stdio server. It exposes only two safe read-only tools: `bridge.status` and `bridge.get_capabilities`.
+
+No Godot connection or WebSocket bridge exists yet.
 
 Target architecture:
 
 `Cursor` / `Claude` / `Codex` / `Cline` -> MCP stdio server -> localhost WebSocket -> Godot Editor Plugin
 
-Phase 1 is bootstrap only. This repository currently defines the structure, documentation, and agent rules only. It does not yet implement the MCP server, the WebSocket bridge, or any Godot automation logic.
+The repository does not yet implement the WebSocket bridge or any Godot automation logic.
