@@ -27,6 +27,8 @@ Before implementation, agents must follow:
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
+Current implementation status: Phase 2A is only the TypeScript package foundation. No real MCP tools or Godot connection exist yet.
+
 Target architecture:
 
 `Cursor` / `Claude` / `Codex` / `Cline` -> MCP stdio server -> localhost WebSocket -> Godot Editor Plugin

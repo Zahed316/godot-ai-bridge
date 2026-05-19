@@ -24,6 +24,8 @@
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
+وضعیت فعلی پیاده‌سازی: فاز 2A فقط پایه بسته‌های TypeScript است. هنوز ابزارهای واقعی MCP یا اتصال به Godot وجود ندارد.
+
 معماری هدف:
 
 `Cursor` / `Claude` / `Codex` / `Cline` → MCP stdio server → localhost WebSocket → Godot Editor Plugin
