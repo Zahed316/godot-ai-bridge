@@ -1,0 +1,25 @@
+# Node / pnpm
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+coverage/
+.cache/
+.turbo/
+*.tsbuildinfo
+
+# Godot
+.godot/
+.import/
+export/
+*.import
+*.godot
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

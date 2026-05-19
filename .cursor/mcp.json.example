@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "godot-ai-bridge": {
+      "command": "REPLACE_WITH_LOCAL_COMMAND",
+      "args": [],
+      "env": {}
+    }
+  }
+}
