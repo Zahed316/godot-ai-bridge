@@ -43,3 +43,15 @@ Required sequence:
 If there are no changes to commit, explicitly report that the working tree is clean.
 If checks cannot run because a dependency is missing, report the exact missing dependency before committing.
 Do not skip the local commit and remote push after an accepted change.
+
+## Final Report Contract
+
+Every final report must include:
+
+- Active role
+- Changed files
+- Checks run or skipped
+- Confirmation of forbidden changes not made
+- Latest commit hash and message
+- Working tree status
+- Next suggested phase or blocker
