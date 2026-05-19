@@ -14,6 +14,16 @@
 - `docs/AGENT_ROLES.md`
 - `docs/NEXT_PHASES.md`
 
+## پایه مهندسی
+
+پیش از پیاده‌سازی، عامل‌ها باید این موارد را رعایت کنند:
+
+- `docs/DEVELOPMENT.md`
+- `docs/QUALITY_GATES.md`
+- `docs/SCHEMA_CONVENTIONS.md`
+- `docs/ERROR_MODEL.md`
+- `docs/ADR/`
+
 معماری هدف:
 
 `Cursor` / `Claude` / `Codex` / `Cline` → MCP stdio server → localhost WebSocket → Godot Editor Plugin

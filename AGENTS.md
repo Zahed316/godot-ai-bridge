@@ -3,6 +3,12 @@
 AI coding agents working in this repository must follow these rules:
 
 - Use minimum tokens.
+- Agents must read `docs/DEVELOPMENT.md`.
+- Agents must read `docs/QUALITY_GATES.md`.
+- Agents must follow `docs/SCHEMA_CONVENTIONS.md` before adding any tool.
+- Agents must follow `docs/ERROR_MODEL.md` before defining any error response.
+- Agents must not add CI deployment.
+- Agents must not add real Godot/MCP behavior in this phase.
 - Read `docs/AGENT_ROLES.md` before making changes.
 - Read `docs/API_BOUNDARIES.md` before implementing any tool.
 - Work phase by phase.

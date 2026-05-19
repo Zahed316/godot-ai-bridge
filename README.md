@@ -17,6 +17,16 @@ Before implementing any feature, agents must read:
 - `docs/AGENT_ROLES.md`
 - `docs/NEXT_PHASES.md`
 
+## Engineering Baseline
+
+Before implementation, agents must follow:
+
+- `docs/DEVELOPMENT.md`
+- `docs/QUALITY_GATES.md`
+- `docs/SCHEMA_CONVENTIONS.md`
+- `docs/ERROR_MODEL.md`
+- `docs/ADR/`
+
 Target architecture:
 
 `Cursor` / `Claude` / `Codex` / `Cline` -> MCP stdio server -> localhost WebSocket -> Godot Editor Plugin
