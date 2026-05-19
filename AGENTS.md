@@ -67,16 +67,6 @@ Default orchestration flow:
 7. Commit and push accepted changes.
 8. Produce the final report required by this file.
 
-## Current Project State
-
-- Phase 2B is complete.
-- The repository has a minimal TypeScript MCP stdio server in `packages/mcp-server`.
-- The MCP server currently exposes exactly two safe read-only tools: `bridge.status` and `bridge.get_capabilities`.
-- Shared constants and tool names live in `packages/protocol`.
-- The Godot addon is still a bootstrap `EditorPlugin`; no status panel phase work has been implemented yet.
-- No WebSocket bridge, Godot command router, runtime inspection, scene tools, write tools, or JSON-RPC-to-Godot behavior exists yet.
-- Official API reference indexes and implementation guardrails live under `docs/`.
-
 ## Repository Map
 
 - `packages/mcp-server/**`: TypeScript MCP stdio server.
