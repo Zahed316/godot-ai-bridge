@@ -13,18 +13,29 @@ import {
   CURRENT_PHASE,
   PROJECT_NAME,
   PROTOCOL_VERSION,
+  WEBSOCKET_HOST,
+  WEBSOCKET_PORT,
 } from "@godot-ai-bridge/protocol";
+
+import {
+  getLocalWebSocketBridgeStatus,
+  startLocalWebSocketServer,
+} from "./bridge/localWebSocketServer.js";
 
 const TOOL_COUNT = BRIDGE_TOOL_NAMES.length;
 const NOT_IMPLEMENTED_NOTE =
-  "Godot and WebSocket bridge integration are not implemented in Phase 2B.";
+  "Phase 4 supports only a localhost WebSocket handshake. Command execution and scene inspection are not implemented.";
 
 const statusOutputSchema = {
   ok: z.literal(true),
   projectName: z.string(),
   protocolVersion: z.string(),
   phase: z.string(),
-  godotConnected: z.literal(false),
+  websocketListening: z.boolean(),
+  websocketHost: z.literal(WEBSOCKET_HOST),
+  websocketPort: z.literal(WEBSOCKET_PORT),
+  godotConnected: z.boolean(),
+  lastHandshakeAt: z.string().nullable(),
   capabilitiesCount: z.number().int().nonnegative(),
   note: z.string(),
 };
@@ -71,12 +82,17 @@ export function createServer(): McpServer {
       },
     },
     async () => {
+      const bridgeStatus = getLocalWebSocketBridgeStatus();
       const structuredContent = {
         ok: true,
         projectName: PROJECT_NAME,
         protocolVersion: PROTOCOL_VERSION,
         phase: CURRENT_PHASE,
-        godotConnected: false,
+        websocketListening: bridgeStatus.websocketListening,
+        websocketHost: bridgeStatus.websocketHost,
+        websocketPort: bridgeStatus.websocketPort,
+        godotConnected: bridgeStatus.godotConnected,
+        lastHandshakeAt: bridgeStatus.lastHandshakeAt,
         capabilitiesCount: TOOL_COUNT,
         note: NOT_IMPLEMENTED_NOTE,
       };
@@ -126,6 +142,7 @@ export function createServer(): McpServer {
 }
 
 export async function main(): Promise<void> {
+  startLocalWebSocketServer();
   const server = createServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);

@@ -28,9 +28,9 @@
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
-وضعیت فعلی پیاده‌سازی: فاز 3 یک سرور حداقلی MCP stdio و یک پنل وضعیت حداقلی در ویرایشگر Godot دارد. سرور MCP فقط دو ابزار امن و read-only برای bridge ارائه می‌کند: `bridge.status` و `bridge.get_capabilities`.
+وضعیت فعلی پیاده‌سازی: فاز 4 یک سرور حداقلی MCP stdio، یک پنل وضعیت حداقلی در ویرایشگر Godot، و یک handshake وب‌سوکت فقط روی localhost بین آن‌ها دارد. سرور MCP فقط دو ابزار امن و read-only برای bridge ارائه می‌کند: `bridge.status` و `bridge.get_capabilities`.
 
-هنوز bridge وب‌سوکت وجود ندارد. هنوز اجرای command وجود ندارد.
+هنوز اجرای command وجود ندارد. هنوز inspection پروژه یا scene وجود ندارد.
 
 این پروژه اکنون indexهای فشرده API رسمی برای Godot و MCP دارد. این indexها به منابع رسمی لینک می‌دهند و guardrailهای مخصوص پروژه را بدون کپی کردن صفحات طولانی مستندات خلاصه می‌کنند.
 
@@ -38,4 +38,4 @@
 
 `Cursor` / `Claude` / `Codex` / `Cline` → MCP stdio server → localhost WebSocket → Godot Editor Plugin
 
-این مخزن هنوز bridge وب‌سوکت یا هیچ منطق خودکارسازی Godot را پیاده‌سازی نکرده است.
+این مخزن هنوز هیچ منطق خودکارسازی Godot را پیاده‌سازی نکرده است.

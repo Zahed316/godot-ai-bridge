@@ -6,8 +6,8 @@
 - Phase 2B: Minimal MCP stdio server with only `bridge.status` and `bridge.get_capabilities`. Done.
 - Official API knowledge enrichment. Done.
 - Phase 3: Minimal Godot plugin status panel skeleton. Done.
-- Phase 4: Local WebSocket handshake only, no command execution. Current.
-- Phase 5: Read-only project and scene inspection.
+- Phase 4: Local WebSocket handshake only, no command execution. Done.
+- Phase 5: Read-only project and scene inspection. Current.
 - Phase 6: Safe transaction foundation.
 - Phase 7: First safe write tool with `dry_run` only.
 - Phase 8: Preview/apply workflow.

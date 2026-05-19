@@ -27,7 +27,7 @@ text = "Plugin status: Loaded"
 
 [node name="CurrentPhase" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
-text = "Current phase: Phase 3"
+text = "Current phase: Phase 4"
 
 [node name="McpServer" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
@@ -35,11 +35,22 @@ text = "MCP server: Not connected"
 
 [node name="GodotBridge" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
-text = "Godot bridge: Not implemented"
+text = "Godot bridge: Handshake only"
 
-[node name="WebSocket" type="Label" parent="MarginContainer/Rows"]
+[node name="WebSocketState" type="Label" parent="MarginContainer/Rows"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "WebSocket: Not implemented"
+text = "WebSocket state: Not connected"
+
+[node name="WebSocketEndpoint" type="Label" parent="MarginContainer/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "WebSocket endpoint: ws://127.0.0.1:6505/godot-ai-bridge"
+
+[node name="LastHandshake" type="Label" parent="MarginContainer/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Last handshake: None"
 
 [node name="SafetyMode" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
