@@ -5,6 +5,7 @@
 - Phase 2A: Minimal TypeScript MCP server foundation, no tools. Done.
 - Phase 2B: Minimal MCP stdio server with only `bridge.status` and `bridge.get_capabilities`. Done.
 - Official API knowledge enrichment. Done.
+- Open-source Pro adoption plan. Done.
 - Phase 3: Minimal Godot plugin status panel skeleton. Done.
 - Phase 4: Local WebSocket handshake only, no command execution. Done.
 - Phase 5: Read-only project and scene inspection. Current.

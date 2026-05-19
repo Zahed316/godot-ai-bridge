@@ -4,6 +4,18 @@
 
 این نسخه فارسی است. نسخه انگلیسی: [README.md](README.md)
 
+## متن‌باز
+
+این پروژه تحت مجوز MIT متن‌باز است. پروژه‌های عمومی Godot MCP فقط برای benchmark، برنامه‌ریزی scope، و طراحی امن بررسی می‌شوند.
+
+پلاگین عمومی Godot در `youichi-uda/godot-mcp-pro` مجوز MIT دارد، اما سرور TypeScript MCP آن proprietary است و در این پروژه reuse نمی‌شود.
+
+لینک‌ها:
+
+- [سیاست متن‌باز](docs/OPEN_SOURCE_POLICY.md)
+- [برنامه اقتباس از Pro](docs/PRO_ADOPTION_PLAN.md)
+- [اعلان‌های شخص ثالث](THIRD_PARTY_NOTICES.md)
+
 ## دانش پروژه
 
 پیش از پیاده‌سازی هر قابلیت، عامل‌ها باید این فایل‌ها را بخوانند:

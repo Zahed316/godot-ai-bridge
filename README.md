@@ -2,6 +2,18 @@
 
 `godot-ai-bridge` is a clean-room open-source project for connecting AI coding agents to Godot 4 through a local, security-conscious bridge.
 
+## Open Source
+
+This project is open source under the MIT license. It uses public Godot MCP projects as benchmarks for scope and safety planning.
+
+The public `youichi-uda/godot-mcp-pro` Godot plugin is MIT licensed, but its TypeScript MCP server is proprietary and is not reused here.
+
+See:
+
+- [Open source policy](docs/OPEN_SOURCE_POLICY.md)
+- [Pro adoption plan](docs/PRO_ADOPTION_PLAN.md)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
+
 ## Languages
 
 - [English](README.md)
