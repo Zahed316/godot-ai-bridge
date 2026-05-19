@@ -15,4 +15,5 @@ Future schema rules:
   - `preview`
   - `apply`
 - Dangerous tools must be disabled by default.
-
+- See `docs/MCP_API_INDEX.md` for MCP schema concepts.
+- See `docs/IMPLEMENTATION_GUARDRAILS.md` for schema-related implementation rules.

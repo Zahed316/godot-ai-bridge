@@ -16,6 +16,10 @@ Before implementing any feature, agents must read:
 - `docs/API_BOUNDARIES.md`
 - `docs/AGENT_ROLES.md`
 - `docs/NEXT_PHASES.md`
+- `docs/OFFICIAL_REFERENCES.md`
+- `docs/GODOT_API_INDEX.md`
+- `docs/MCP_API_INDEX.md`
+- `docs/IMPLEMENTATION_GUARDRAILS.md`
 
 ## Engineering Baseline
 
@@ -30,6 +34,8 @@ Before implementation, agents must follow:
 Current implementation status: Phase 2B provides a minimal MCP stdio server. It exposes only two safe read-only tools: `bridge.status` and `bridge.get_capabilities`.
 
 No Godot connection or WebSocket bridge exists yet.
+
+The project now has compact official API indexes for Godot and MCP. These indexes link to official references and summarize project-specific guardrails without copying large documentation pages.
 
 Target architecture:
 

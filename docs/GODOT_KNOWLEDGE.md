@@ -21,3 +21,7 @@ Planned future responsibilities:
 
 Do not use arbitrary editor script execution by default.
 
+## Official API Areas to Respect
+
+Future Godot work must use the compact official API index in `docs/GODOT_API_INDEX.md`.
+Treat `@tool`, `EditorPlugin`, `EditorInterface`, filesystem APIs, undo/redo, scene APIs, and transport APIs as security-sensitive surfaces.

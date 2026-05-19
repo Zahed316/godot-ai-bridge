@@ -32,3 +32,7 @@ Write tools must eventually follow:
 
 `dry_run -> preview -> apply`
 
+## Official MCP Areas to Respect
+
+Future MCP work must use the compact official MCP index in `docs/MCP_API_INDEX.md`.
+Pay special attention to stdio transport rules, tool schemas, structured output, error behavior, and progressive tool discovery.

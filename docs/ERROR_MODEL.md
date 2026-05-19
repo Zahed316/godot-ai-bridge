@@ -29,3 +29,4 @@ Planned error codes:
 
 No runtime code should use this yet; this is only the future contract.
 
+Official MCP references for future runtime error behavior are indexed in `docs/MCP_API_INDEX.md` and `docs/OFFICIAL_REFERENCES.md`.

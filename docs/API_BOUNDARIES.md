@@ -18,3 +18,8 @@ Forbidden by default:
 - Deleting scenes or resources without snapshot and approval
 - Adding dangerous tools without explicit approval
 
+Reference indexes and guardrails:
+
+- `docs/GODOT_API_INDEX.md`
+- `docs/MCP_API_INDEX.md`
+- `docs/IMPLEMENTATION_GUARDRAILS.md`
