@@ -27,7 +27,7 @@ text = "Plugin status: Loaded"
 
 [node name="CurrentPhase" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
-text = "Current phase: Phase 4"
+text = "Current phase: Phase 5"
 
 [node name="McpServer" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
@@ -35,7 +35,19 @@ text = "MCP server: Not connected"
 
 [node name="GodotBridge" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
-text = "Godot bridge: Handshake only"
+text = "Godot bridge: Read-only inspection available"
+
+[node name="ReadOnlyInspection" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Read-only inspection: Available"
+
+[node name="CommandExecution" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Command execution: Disabled"
+
+[node name="WriteTools" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Write tools: Disabled"
 
 [node name="WebSocketState" type="Label" parent="MarginContainer/Rows"]
 unique_name_in_owner = true
@@ -54,4 +66,4 @@ text = "Last handshake: None"
 
 [node name="SafetyMode" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
-text = "Safety mode: Local-only, no command execution"
+text = "Safety mode: Local-only, read-only"

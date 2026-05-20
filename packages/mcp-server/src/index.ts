@@ -12,19 +12,23 @@ import {
   BRIDGE_TOOL_NAMES,
   CURRENT_PHASE,
   PROJECT_NAME,
+  PROJECT_GET_FILESYSTEM_TREE_TOOL,
+  PROJECT_GET_INFO_TOOL,
   PROTOCOL_VERSION,
+  SCENE_GET_TREE_TOOL,
   WEBSOCKET_HOST,
   WEBSOCKET_PORT,
 } from "@godot-ai-bridge/protocol";
 
 import {
   getLocalWebSocketBridgeStatus,
+  sendReadOnlyBridgeRequest,
   startLocalWebSocketServer,
 } from "./bridge/localWebSocketServer.js";
 
 const TOOL_COUNT = BRIDGE_TOOL_NAMES.length;
 const NOT_IMPLEMENTED_NOTE =
-  "Phase 4 supports only a localhost WebSocket handshake. Command execution and scene inspection are not implemented.";
+  "Phase 5 supports localhost read-only project and scene inspection. Command execution and write tools are disabled.";
 
 const statusOutputSchema = {
   ok: z.literal(true),
@@ -51,6 +55,41 @@ const capabilitiesOutputSchema = {
   ),
 };
 
+const bridgeErrorShape = z
+  .object({
+    code: z.string(),
+    message: z.string(),
+    details: z.record(z.string(), z.unknown()),
+    suggestions: z.array(z.string()),
+  })
+  .optional();
+
+const projectInfoOutputSchema = {
+  ok: z.boolean(),
+  projectName: z.string().optional(),
+  godotVersion: z.string().nullable().optional(),
+  projectPath: z.string().nullable().optional(),
+  pluginPhase: z.string().optional(),
+  bridgeStatus: z.string().optional(),
+  error: bridgeErrorShape,
+};
+
+const filesystemTreeOutputSchema = {
+  ok: z.boolean(),
+  root: z.literal("res://").optional(),
+  maxDepth: z.number().int().nonnegative().optional(),
+  children: z.array(z.unknown()).optional(),
+  error: bridgeErrorShape,
+};
+
+const sceneTreeOutputSchema = {
+  ok: z.boolean(),
+  currentScenePath: z.string().nullable().optional(),
+  message: z.string().optional(),
+  root: z.unknown().nullable().optional(),
+  error: bridgeErrorShape,
+};
+
 const capabilities = [
   {
     name: BRIDGE_STATUS_TOOL,
@@ -62,7 +101,37 @@ const capabilities = [
     description: "Lists the currently exposed safe bridge tools.",
     readOnly: true,
   },
+  {
+    name: PROJECT_GET_INFO_TOOL,
+    description: "Reads basic Godot project metadata through the local bridge.",
+    readOnly: true,
+  },
+  {
+    name: PROJECT_GET_FILESYSTEM_TREE_TOOL,
+    description: "Reads a shallow project filesystem tree through the local bridge.",
+    readOnly: true,
+  },
+  {
+    name: SCENE_GET_TREE_TOOL,
+    description: "Reads the open editor scene tree through the local bridge.",
+    readOnly: true,
+  },
 ] as const;
+
+function toolResult(structuredContent: Record<string, unknown>): {
+  structuredContent: Record<string, unknown>;
+  content: Array<{ type: "text"; text: string }>;
+} {
+  return {
+    structuredContent,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(structuredContent),
+      },
+    ],
+  };
+}
 
 export function createServer(): McpServer {
   const server = new McpServer({
@@ -97,15 +166,7 @@ export function createServer(): McpServer {
         note: NOT_IMPLEMENTED_NOTE,
       };
 
-      return {
-        structuredContent,
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(structuredContent),
-          },
-        ],
-      };
+      return toolResult(structuredContent);
     },
   );
 
@@ -126,15 +187,58 @@ export function createServer(): McpServer {
         tools: capabilities,
       };
 
-      return {
-        structuredContent,
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(structuredContent),
-          },
-        ],
-      };
+      return toolResult(structuredContent);
+    },
+  );
+
+  server.registerTool(
+    PROJECT_GET_INFO_TOOL,
+    {
+      title: "Project Info",
+      description: "Read basic Godot project metadata.",
+      inputSchema: {},
+      outputSchema: projectInfoOutputSchema,
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async () => {
+      const structuredContent = await sendReadOnlyBridgeRequest(PROJECT_GET_INFO_TOOL);
+      return toolResult(structuredContent);
+    },
+  );
+
+  server.registerTool(
+    PROJECT_GET_FILESYSTEM_TREE_TOOL,
+    {
+      title: "Project Filesystem Tree",
+      description: "Read a shallow Godot project filesystem tree.",
+      inputSchema: {},
+      outputSchema: filesystemTreeOutputSchema,
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async () => {
+      const structuredContent = await sendReadOnlyBridgeRequest(PROJECT_GET_FILESYSTEM_TREE_TOOL);
+      return toolResult(structuredContent);
+    },
+  );
+
+  server.registerTool(
+    SCENE_GET_TREE_TOOL,
+    {
+      title: "Scene Tree",
+      description: "Read the currently open Godot editor scene tree.",
+      inputSchema: {},
+      outputSchema: sceneTreeOutputSchema,
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async () => {
+      const structuredContent = await sendReadOnlyBridgeRequest(SCENE_GET_TREE_TOOL);
+      return toolResult(structuredContent);
     },
   );
 

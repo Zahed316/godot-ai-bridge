@@ -3,14 +3,19 @@ import type { IncomingMessage } from "node:http";
 import {
   HANDSHAKE_PROTOCOL_VERSION,
   HANDSHAKE_SERVER_NAME,
+  READ_ONLY_BRIDGE_METHODS,
   WEBSOCKET_HOST,
   WEBSOCKET_PATH,
   WEBSOCKET_PORT,
+  type BridgeErrorResponse,
   type BridgeConnectionState,
   type BridgeHandshakeRequest,
   type BridgeHandshakeResponse,
+  type BridgeReadOnlyRequest,
+  type BridgeReadOnlyResponse,
+  type ReadOnlyBridgeMethod,
 } from "@godot-ai-bridge/protocol";
-import { WebSocketServer, type WebSocket } from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 
 export type LocalWebSocketBridgeStatus = {
   websocketListening: boolean;
@@ -31,6 +36,16 @@ const state: LocalWebSocketBridgeStatus = {
 };
 
 let bridgeServer: WebSocketServer | null = null;
+let activeSocket: WebSocket | null = null;
+let nextRequestId = 1;
+
+const pendingRequests = new Map<
+  string,
+  {
+    resolve: (value: Record<string, unknown> | BridgeErrorResponse) => void;
+    timeout: NodeJS.Timeout;
+  }
+>();
 
 function isHandshakeRequest(value: unknown): value is BridgeHandshakeRequest {
   if (typeof value !== "object" || value === null) {
@@ -50,15 +65,22 @@ function sendJson(socket: WebSocket, payload: unknown): void {
   socket.send(JSON.stringify(payload));
 }
 
-function rejectMessage(socket: WebSocket, message: string): void {
-  sendJson(socket, {
+function bridgeError(code: string, message: string, suggestions: string[] = []): BridgeErrorResponse {
+  return {
     ok: false,
     error: {
-      code: "METHOD_NOT_FOUND",
+      code,
       message,
       details: {},
-      suggestions: [],
+      suggestions,
     },
+  };
+}
+
+function rejectMessage(socket: WebSocket, message: string): void {
+  const error = bridgeError("METHOD_NOT_FOUND", message);
+  sendJson(socket, {
+    ...error,
   });
 }
 
@@ -69,6 +91,76 @@ function requestIsAllowed(request: IncomingMessage): boolean {
 
 export function getLocalWebSocketBridgeStatus(): LocalWebSocketBridgeStatus {
   return { ...state };
+}
+
+function isReadOnlyBridgeMethod(method: unknown): method is ReadOnlyBridgeMethod {
+  return (
+    typeof method === "string" &&
+    (READ_ONLY_BRIDGE_METHODS as readonly string[]).includes(method)
+  );
+}
+
+function isReadOnlyResponse(value: unknown): value is BridgeReadOnlyResponse {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return (
+    candidate["type"] === "bridge.response" &&
+    typeof candidate["id"] === "string" &&
+    typeof candidate["result"] === "object" &&
+    candidate["result"] !== null
+  );
+}
+
+function clearPendingRequests(response: BridgeErrorResponse): void {
+  for (const pending of pendingRequests.values()) {
+    clearTimeout(pending.timeout);
+    pending.resolve(response);
+  }
+  pendingRequests.clear();
+}
+
+export function createBridgeNotConnectedError(): BridgeErrorResponse {
+  return bridgeError("BRIDGE_NOT_CONNECTED", "Godot is not connected to the local bridge.", [
+    "Open the Godot project.",
+    "Enable or reload the godot-ai-bridge editor plugin.",
+    `Confirm the plugin can reach ws://${WEBSOCKET_HOST}:${WEBSOCKET_PORT}${WEBSOCKET_PATH}.`,
+  ]);
+}
+
+export async function sendReadOnlyBridgeRequest(
+  method: ReadOnlyBridgeMethod,
+  params: Record<string, never> = {},
+): Promise<Record<string, unknown> | BridgeErrorResponse> {
+  if (!isReadOnlyBridgeMethod(method)) {
+    return bridgeError("METHOD_NOT_FOUND", `Unsupported read-only bridge method: ${String(method)}`);
+  }
+
+  if (activeSocket === null || activeSocket.readyState !== WebSocket.OPEN || !state.godotConnected) {
+    return createBridgeNotConnectedError();
+  }
+
+  const id = `request-${nextRequestId}`;
+  nextRequestId += 1;
+
+  const request: BridgeReadOnlyRequest = {
+    type: "bridge.request",
+    id,
+    method,
+    params,
+  };
+
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      pendingRequests.delete(id);
+      resolve(bridgeError("TIMEOUT", `Timed out waiting for Godot response to ${method}.`));
+    }, 5000);
+
+    pendingRequests.set(id, { resolve, timeout });
+    sendJson(activeSocket as WebSocket, request);
+  });
 }
 
 export function startLocalWebSocketServer(): void {
@@ -100,7 +192,28 @@ export function startLocalWebSocketServer(): void {
 
     socket.on("message", (data) => {
       if (handshakeAccepted) {
-        rejectMessage(socket, "Only the initial handshake is supported in Phase 4.");
+        let responsePayload: unknown;
+        try {
+          responsePayload = JSON.parse(data.toString());
+        } catch {
+          rejectMessage(socket, "Invalid JSON message.");
+          return;
+        }
+
+        if (!isReadOnlyResponse(responsePayload)) {
+          rejectMessage(socket, "Only read-only bridge responses are accepted after handshake.");
+          return;
+        }
+
+        const pending = pendingRequests.get(responsePayload.id);
+        if (pending === undefined) {
+          rejectMessage(socket, `No pending request for response id ${responsePayload.id}.`);
+          return;
+        }
+
+        clearTimeout(pending.timeout);
+        pendingRequests.delete(responsePayload.id);
+        pending.resolve(responsePayload.result);
         return;
       }
 
@@ -130,12 +243,17 @@ export function startLocalWebSocketServer(): void {
       state.lastHandshakeAt = receivedAt;
       state.connectionState = "connected";
       handshakeAccepted = true;
+      activeSocket = socket;
       sendJson(socket, response);
     });
 
     socket.on("close", () => {
+      if (activeSocket === socket) {
+        activeSocket = null;
+      }
       state.godotConnected = false;
       state.connectionState = state.websocketListening ? "listening" : "disconnected";
+      clearPendingRequests(createBridgeNotConnectedError());
     });
   });
 

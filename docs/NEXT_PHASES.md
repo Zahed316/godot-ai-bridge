@@ -8,8 +8,8 @@
 - Open-source Pro adoption plan. Done.
 - Phase 3: Minimal Godot plugin status panel skeleton. Done.
 - Phase 4: Local WebSocket handshake only, no command execution. Done.
-- Phase 5: Read-only project and scene inspection. Current.
-- Phase 6: Safe transaction foundation.
+- Phase 5: Read-only project and scene inspection. Done.
+- Phase 6: Safe transaction foundation. Current.
 - Phase 7: First safe write tool with `dry_run` only.
 - Phase 8: Preview/apply workflow.
 - Phase 9: 2D game workflow tools.

@@ -11,6 +11,7 @@ var socket := WebSocketPeer.new()
 var connection_state := "Not connected"
 var last_handshake_at := ""
 var handshake_sent := false
+var request_handler: RefCounted
 
 func _ready() -> void:
 	set_process(true)
@@ -34,6 +35,9 @@ func _process(_delta: float) -> void:
 
 func get_websocket_url() -> String:
 	return WEBSOCKET_URL
+
+func set_request_handler(next_request_handler: RefCounted) -> void:
+	request_handler = next_request_handler
 
 func _connect_to_bridge() -> void:
 	_set_state("Connecting")
@@ -64,8 +68,33 @@ func _read_packets() -> void:
 		if payload.get("type") == "bridge.handshake.response" and payload.get("ok") == true:
 			last_handshake_at = str(payload.get("receivedAt", ""))
 			_set_state("Connected", true)
+		elif payload.get("type") == "bridge.request":
+			_handle_bridge_request(payload)
 		elif payload.has("error"):
 			_set_state("Error")
+
+func _handle_bridge_request(payload: Dictionary) -> void:
+	var response: Dictionary
+	if request_handler == null:
+		response = {
+			"type": "bridge.response",
+			"id": str(payload.get("id", "")),
+			"result": {
+				"ok": false,
+				"error": {
+					"code": "INTERNAL_ERROR",
+					"message": "Read-only request handler is not available.",
+					"details": {},
+					"suggestions": []
+				}
+			}
+		}
+	else:
+		response = request_handler.call("handle_request", payload, connection_state)
+
+	var error := socket.send_text(JSON.stringify(response))
+	if error != OK:
+		_set_state("Error")
 
 func _set_state(next_state: String, force_emit := false) -> void:
 	if connection_state == next_state and not force_emit:
