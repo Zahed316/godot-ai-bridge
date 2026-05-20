@@ -11,6 +11,7 @@
 - Phase 5: Read-only project and scene inspection. Done.
 - Phase 6A: Safe protocol/error/path foundation. Done.
 - Phase 6B: Transaction and snapshot foundation. Done.
+- Coding-Solo compatibility mapping. Done.
 - Phase 7: First safe write tool with `dry_run` only. Current.
 - Phase 8: Preview/apply workflow.
 - Phase 9: 2D game workflow tools.

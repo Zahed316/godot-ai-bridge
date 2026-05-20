@@ -46,6 +46,8 @@
 
 bridge اکنون پاسخ‌های خطای ساختاریافته فقط-خواندنی، metadata مربوط به heartbeat، قرارداد path guard فقط-خواندنی در سطح string، و helperهای داخلی transaction/snapshot به‌صورت metadata-only دارد. هنوز ابزار write یا اجرای command وجود ندارد.
 
+این پروژه compatibility با نام‌های رایج ابزارهای Godot MCP را در [Tool compatibility](docs/TOOL_COMPATIBILITY.md) دنبال می‌کند. نام‌های canonical داخلی از dot notation استفاده می‌کنند، و هدف‌های ناسازگار با ایمنی مرحله‌بندی شده و به‌صورت پیش‌فرض غیرفعال هستند.
+
 این پروژه اکنون indexهای فشرده API رسمی برای Godot و MCP دارد. این indexها به منابع رسمی لینک می‌دهند و guardrailهای مخصوص پروژه را بدون کپی کردن صفحات طولانی مستندات خلاصه می‌کنند.
 
 معماری هدف:

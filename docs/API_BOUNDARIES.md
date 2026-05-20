@@ -13,6 +13,8 @@ Phase 6A remains read-only. It may define shared envelopes, structured errors, h
 
 Phase 6B adds internal metadata-only transaction and snapshot foundation. MCP write exposure, dry-run tools, preview/apply tools, rollback tools, scene mutation, and scene saving remain forbidden.
 
+Coding-Solo compatibility tools must follow `godot-ai-bridge` phase boundaries. Compatibility does not override security. Dot-notation internal tools are canonical. Snake_case external aliases are optional and disabled by default. Process execution tools require explicit approval.
+
 Forbidden by default:
 
 - External command execution

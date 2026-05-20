@@ -20,4 +20,9 @@ These rules are derived from official Godot and MCP references plus this project
 - Treat `@tool` scripts as editor-executed code and keep them minimal.
 - Use `EditorUndoRedoManager` for editor-integrated writes once write phases begin.
 - No transaction apply or rollback may be exposed before Phase 8.
+- No compatibility alias may bypass policy.
+- No run, launch, or stop tool may be implemented before a runtime phase.
+- No save or UID update tool may be implemented before snapshot/apply approval exists.
+- No export tool may be implemented before a full-dev/export phase.
+- First write tools must be `dry_run` only.
 - Security-sensitive tools require Security Agent review before implementation.

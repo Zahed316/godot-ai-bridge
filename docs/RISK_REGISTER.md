@@ -23,3 +23,15 @@
 | Runtime mutation | Defer until runtime inspection and write safety are separately reviewed. |
 | Scene deletion | Require snapshot, approval, and undo-aware workflow. |
 | Network exposure | Bind only to `127.0.0.1`; never bind to `0.0.0.0`. |
+
+## Compatibility Tool Risks
+
+| Risk | Severity | Mitigation | Responsible agent | Earliest allowed phase |
+| --- | --- | --- | --- | --- |
+| External process launch through `editor.launch` | High | Keep process execution disabled by default; require explicit approval and full-dev mode. | Security Agent | Later, after explicit approval |
+| Project run/stop through runtime tools | High | Defer until runtime and QA boundaries exist; isolate from editor read/write tools. | Architecture Agent | qa-runtime phase |
+| Scene save through `scene.save` | High | Require snapshot, approval, transaction apply, and rollback planning. | Godot Plugin Agent | After Phase 8 apply |
+| UID updates or resource resaves | High | Treat as risky write; require project-scoped paths, snapshot, and strong approval. | Security Agent | Later after snapshot/apply |
+| Compatibility aliases bypassing safety | High | Keep aliases disabled by default; wrappers must map to one canonical dot-notation tool and reuse policy checks. | Architecture Agent | Explicit compatibility phase |
+| Arbitrary filesystem project discovery | Medium | Limit `workspace.list_projects` to configured safe roots; deny traversal and global scans. | Security Agent | Later full-dev phase |
+| Export operations such as mesh library export | Medium | Defer until full-dev/export phase; require path guard, preview, and approval. | Architecture Agent | Advanced/export phase |

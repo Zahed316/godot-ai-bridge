@@ -49,6 +49,8 @@ The MCP server exposes exactly five read-only tools: `bridge.status`, `bridge.ge
 
 The bridge now has structured read-only error responses, heartbeat metadata, a string-level read-only path guard contract, and metadata-only internal transaction/snapshot helpers. No write tools or command execution exist yet.
 
+The project tracks compatibility with common Godot MCP tool names in [Tool compatibility](docs/TOOL_COMPATIBILITY.md). Canonical internal names use dot notation, and unsafe compatibility targets are phased and disabled by default.
+
 The project now has compact official API indexes for Godot and MCP. These indexes link to official references and summarize project-specific guardrails without copying large documentation pages.
 
 Target architecture:
