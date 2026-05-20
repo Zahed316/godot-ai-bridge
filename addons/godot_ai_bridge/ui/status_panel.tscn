@@ -45,9 +45,21 @@ text = "Read-only inspection: Available"
 layout_mode = 2
 text = "Command execution: Disabled"
 
+[node name="TransactionFoundation" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Transaction foundation: Available"
+
+[node name="SnapshotFoundation" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Snapshot foundation: Metadata-only"
+
 [node name="WriteTools" type="Label" parent="MarginContainer/Rows"]
 layout_mode = 2
 text = "Write tools: Disabled"
+
+[node name="ApplyRollback" type="Label" parent="MarginContainer/Rows"]
+layout_mode = 2
+text = "Apply/Rollback: Disabled"
 
 [node name="WebSocketState" type="Label" parent="MarginContainer/Rows"]
 unique_name_in_owner = true

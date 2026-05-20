@@ -28,7 +28,7 @@ import {
 
 const TOOL_COUNT = BRIDGE_TOOL_NAMES.length;
 const NOT_IMPLEMENTED_NOTE =
-  "Phase 6A keeps the bridge read-only while adding shared protocol, error, heartbeat, and path guard foundations. Command execution and write tools are disabled.";
+  "Phase 6B adds internal metadata-only transaction and snapshot foundations. Command execution and write tools are disabled.";
 
 const statusOutputSchema = {
   ok: z.literal(true),
@@ -42,6 +42,11 @@ const statusOutputSchema = {
   lastHandshakeAt: z.string().nullable(),
   lastHeartbeatAt: z.string().nullable(),
   reconnectAttemptCount: z.number().int().nonnegative(),
+  transactionFoundation: z.literal(true),
+  snapshotFoundation: z.literal("metadata-only"),
+  writeToolsEnabled: z.literal(false),
+  applyEnabled: z.literal(false),
+  rollbackEnabled: z.literal(false),
   capabilitiesCount: z.number().int().nonnegative(),
   note: z.string(),
 };
@@ -166,6 +171,11 @@ export function createServer(): McpServer {
         lastHandshakeAt: bridgeStatus.lastHandshakeAt,
         lastHeartbeatAt: bridgeStatus.lastHeartbeatAt,
         reconnectAttemptCount: bridgeStatus.reconnectAttemptCount,
+        transactionFoundation: true,
+        snapshotFoundation: "metadata-only",
+        writeToolsEnabled: false,
+        applyEnabled: false,
+        rollbackEnabled: false,
         capabilitiesCount: TOOL_COUNT,
         note: NOT_IMPLEMENTED_NOTE,
       };

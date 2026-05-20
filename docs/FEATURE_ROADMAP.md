@@ -18,12 +18,14 @@ This roadmap borrows product categories from Godot MCP Pro as a benchmark while 
 
 ## Phase 6B
 
-- transaction foundation
-- snapshots
+- metadata-only transaction foundation
+- metadata-only snapshot foundation
+- undo/redo adapter skeleton
 
 ## Phase 7
 
 - first safe write tool with `dry_run` only
+- actual dry-run write planning starts here
 
 ## Phase 8
 

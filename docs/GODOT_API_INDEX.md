@@ -24,7 +24,8 @@ This file is an index, not a copy of official documentation.
 - Expected use in this project: Required for future safe write tools and transaction apply steps.
 - Allowed phase: Phase 6+.
 - Risks: Wrong history context, unsaved scene state, irreversible edits if bypassed.
-- Forbidden use: Destructive scene/resource changes outside undo/snapshot workflow.
+- Phase 6B status: Skeleton adapter only; it may report availability and manage placeholder metadata, but must not perform undoable edits.
+- Forbidden use: Destructive scene/resource changes outside undo/snapshot workflow. Actual undoable write actions start in later write phases.
 
 ## ProjectSettings
 

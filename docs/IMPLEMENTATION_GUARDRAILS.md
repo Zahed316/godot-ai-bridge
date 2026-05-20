@@ -19,4 +19,5 @@ These rules are derived from official Godot and MCP references plus this project
 - Route file writes through a path guard.
 - Treat `@tool` scripts as editor-executed code and keep them minimal.
 - Use `EditorUndoRedoManager` for editor-integrated writes once write phases begin.
+- No transaction apply or rollback may be exposed before Phase 8.
 - Security-sensitive tools require Security Agent review before implementation.

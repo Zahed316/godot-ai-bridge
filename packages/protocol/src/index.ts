@@ -1,5 +1,5 @@
 export const PROJECT_NAME = "godot-ai-bridge" as const;
-export const PROTOCOL_VERSION = "phase-6a" as const;
+export const PROTOCOL_VERSION = "phase-6b" as const;
 
 export type PhaseName =
   | "phase-0"
@@ -9,9 +9,10 @@ export type PhaseName =
   | "phase-3"
   | "phase-4"
   | "phase-5"
-  | "phase-6a";
+  | "phase-6a"
+  | "phase-6b";
 
-export const CURRENT_PHASE: PhaseName = "phase-6a";
+export const CURRENT_PHASE: PhaseName = "phase-6b";
 
 export const BRIDGE_STATUS_TOOL = "bridge.status" as const;
 export const BRIDGE_GET_CAPABILITIES_TOOL = "bridge.get_capabilities" as const;
@@ -75,6 +76,11 @@ export const BRIDGE_ERROR_CODES = [
   "OPERATION_DENIED",
   "TIMEOUT",
   "INTERNAL_ERROR",
+  "SNAPSHOT_REQUIRED",
+  "APPROVAL_REQUIRED",
+  "TRANSACTION_NOT_FOUND",
+  "TRANSACTION_NOT_APPLICABLE",
+  "ROLLBACK_FAILED",
 ] as const;
 
 export type BridgeErrorCode = (typeof BRIDGE_ERROR_CODES)[number];
@@ -163,3 +169,62 @@ export function isReadOnlyPathAllowed(path: string): boolean {
 
   return !READ_ONLY_PATH_BLOCKED_PATTERNS.some((pattern) => path.includes(pattern));
 }
+
+export type TransactionId = string;
+export type SnapshotId = string;
+
+export const TRANSACTION_STATES = [
+  "planned",
+  "previewed",
+  "applied",
+  "rolled_back",
+  "failed",
+  "cancelled",
+] as const;
+
+export type TransactionState = (typeof TRANSACTION_STATES)[number];
+
+export const TRANSACTION_RISK_LEVELS = [
+  "read",
+  "safe_write",
+  "risky_write",
+  "destructive",
+] as const;
+
+export type TransactionRiskLevel = (typeof TRANSACTION_RISK_LEVELS)[number];
+
+export const TRANSACTION_CHANGE_KINDS = [
+  "create",
+  "update",
+  "delete",
+  "move",
+  "rename",
+  "attach",
+  "detach",
+  "unknown",
+] as const;
+
+export type TransactionChangeKind = (typeof TRANSACTION_CHANGE_KINDS)[number];
+
+export type TransactionChangeSummary = {
+  kind: TransactionChangeKind;
+  targetPath: string | null;
+  description: string;
+};
+
+export type TransactionPreview = {
+  transactionId: TransactionId;
+  state: TransactionState;
+  riskLevel: TransactionRiskLevel;
+  changes: TransactionChangeSummary[];
+  requiresSnapshot: boolean;
+  snapshotId: SnapshotId | null;
+};
+
+export type SnapshotSummary = {
+  snapshotId: SnapshotId;
+  transactionId: TransactionId | null;
+  createdAt: string;
+  label: string;
+  metadataOnly: true;
+};

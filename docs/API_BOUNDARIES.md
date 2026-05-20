@@ -11,6 +11,8 @@ Allowed future boundaries:
 
 Phase 6A remains read-only. It may define shared envelopes, structured errors, heartbeat metadata, and string-level read-only path guard contracts, but it must not add write tools, transaction apply behavior, runtime inspection, or command execution.
 
+Phase 6B adds internal metadata-only transaction and snapshot foundation. MCP write exposure, dry-run tools, preview/apply tools, rollback tools, scene mutation, and scene saving remain forbidden.
+
 Forbidden by default:
 
 - External command execution

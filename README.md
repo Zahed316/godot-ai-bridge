@@ -43,11 +43,11 @@ Before implementation, agents must follow:
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
-Current implementation status: Phase 6A provides a minimal MCP stdio server, a minimal Godot editor status panel, a localhost-only WebSocket bridge, first read-only Godot project and scene inspection tools, and shared safe bridge foundations.
+Current implementation status: Phase 6B provides a minimal MCP stdio server, a minimal Godot editor status panel, a localhost-only WebSocket bridge, first read-only Godot project and scene inspection tools, shared safe bridge foundations, and internal transaction/snapshot foundations.
 
 The MCP server exposes exactly five read-only tools: `bridge.status`, `bridge.get_capabilities`, `project.get_info`, `project.get_filesystem_tree`, and `scene.get_tree`.
 
-The bridge now has structured read-only error responses, heartbeat metadata, and a string-level read-only path guard contract. No write tools or command execution exist yet.
+The bridge now has structured read-only error responses, heartbeat metadata, a string-level read-only path guard contract, and metadata-only internal transaction/snapshot helpers. No write tools or command execution exist yet.
 
 The project now has compact official API indexes for Godot and MCP. These indexes link to official references and summarize project-specific guardrails without copying large documentation pages.
 
