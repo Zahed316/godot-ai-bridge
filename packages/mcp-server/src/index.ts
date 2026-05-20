@@ -28,7 +28,7 @@ import {
 
 const TOOL_COUNT = BRIDGE_TOOL_NAMES.length;
 const NOT_IMPLEMENTED_NOTE =
-  "Phase 5 supports localhost read-only project and scene inspection. Command execution and write tools are disabled.";
+  "Phase 6A keeps the bridge read-only while adding shared protocol, error, heartbeat, and path guard foundations. Command execution and write tools are disabled.";
 
 const statusOutputSchema = {
   ok: z.literal(true),
@@ -40,6 +40,8 @@ const statusOutputSchema = {
   websocketPort: z.literal(WEBSOCKET_PORT),
   godotConnected: z.boolean(),
   lastHandshakeAt: z.string().nullable(),
+  lastHeartbeatAt: z.string().nullable(),
+  reconnectAttemptCount: z.number().int().nonnegative(),
   capabilitiesCount: z.number().int().nonnegative(),
   note: z.string(),
 };
@@ -162,6 +164,8 @@ export function createServer(): McpServer {
         websocketPort: bridgeStatus.websocketPort,
         godotConnected: bridgeStatus.godotConnected,
         lastHandshakeAt: bridgeStatus.lastHandshakeAt,
+        lastHeartbeatAt: bridgeStatus.lastHeartbeatAt,
+        reconnectAttemptCount: bridgeStatus.reconnectAttemptCount,
         capabilitiesCount: TOOL_COUNT,
         note: NOT_IMPLEMENTED_NOTE,
       };

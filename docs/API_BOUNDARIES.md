@@ -9,6 +9,8 @@ Allowed future boundaries:
 - Runtime inspection must be isolated from editor operations.
 - File writes must pass through a path guard.
 
+Phase 6A remains read-only. It may define shared envelopes, structured errors, heartbeat metadata, and string-level read-only path guard contracts, but it must not add write tools, transaction apply behavior, runtime inspection, or command execution.
+
 Forbidden by default:
 
 - External command execution

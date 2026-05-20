@@ -9,22 +9,25 @@ This roadmap borrows product categories from Godot MCP Pro as a benchmark while 
 - `scene.get_tree`
 - `editor.get_errors` or `editor.get_output_log` if feasible
 
-## Phase 6
+## Phase 6A
 
-- shared internal command envelope
+- shared internal read-only bridge envelope
 - structured errors
 - heartbeat/reconnect
 - path guard read-only
 
-## Phase 7
+## Phase 6B
 
 - transaction foundation
 - snapshots
-- `dry_run` write planning
+
+## Phase 7
+
+- first safe write tool with `dry_run` only
 
 ## Phase 8
 
-- first safe node/property write with `dry_run` only
+- preview/apply workflow
 
 ## Phase 9
 

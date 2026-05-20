@@ -40,11 +40,11 @@
 - `docs/ERROR_MODEL.md`
 - `docs/ADR/`
 
-وضعیت فعلی پیاده‌سازی: فاز 5 یک سرور حداقلی MCP stdio، یک پنل وضعیت حداقلی در ویرایشگر Godot، یک bridge وب‌سوکت فقط روی localhost، و اولین ابزارهای inspection فقط-خواندنی پروژه و scene در Godot را دارد.
+وضعیت فعلی پیاده‌سازی: فاز 6A یک سرور حداقلی MCP stdio، یک پنل وضعیت حداقلی در ویرایشگر Godot، یک bridge وب‌سوکت فقط روی localhost، اولین ابزارهای inspection فقط-خواندنی پروژه و scene در Godot، و foundation امن مشترک برای bridge را دارد.
 
 سرور MCP دقیقاً پنج ابزار فقط-خواندنی ارائه می‌کند: `bridge.status`، `bridge.get_capabilities`، `project.get_info`، `project.get_filesystem_tree`، و `scene.get_tree`.
 
-هنوز ابزار write یا اجرای command وجود ندارد.
+bridge اکنون پاسخ‌های خطای ساختاریافته فقط-خواندنی، metadata مربوط به heartbeat، و قرارداد path guard فقط-خواندنی در سطح string دارد. هنوز ابزار write یا اجرای command وجود ندارد.
 
 این پروژه اکنون indexهای فشرده API رسمی برای Godot و MCP دارد. این indexها به منابع رسمی لینک می‌دهند و guardrailهای مخصوص پروژه را بدون کپی کردن صفحات طولانی مستندات خلاصه می‌کنند.
 

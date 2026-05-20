@@ -7,10 +7,12 @@ import {
   WEBSOCKET_HOST,
   WEBSOCKET_PATH,
   WEBSOCKET_PORT,
+  createBridgeErrorResponse,
   type BridgeErrorResponse,
   type BridgeConnectionState,
   type BridgeHandshakeRequest,
   type BridgeHandshakeResponse,
+  type BridgeHeartbeatMessage,
   type BridgeReadOnlyRequest,
   type BridgeReadOnlyResponse,
   type ReadOnlyBridgeMethod,
@@ -23,6 +25,8 @@ export type LocalWebSocketBridgeStatus = {
   websocketPort: typeof WEBSOCKET_PORT;
   godotConnected: boolean;
   lastHandshakeAt: string | null;
+  lastHeartbeatAt: string | null;
+  reconnectAttemptCount: number;
   connectionState: BridgeConnectionState;
 };
 
@@ -32,6 +36,8 @@ const state: LocalWebSocketBridgeStatus = {
   websocketPort: WEBSOCKET_PORT,
   godotConnected: false,
   lastHandshakeAt: null,
+  lastHeartbeatAt: null,
+  reconnectAttemptCount: 0,
   connectionState: "disconnected",
 };
 
@@ -65,20 +71,8 @@ function sendJson(socket: WebSocket, payload: unknown): void {
   socket.send(JSON.stringify(payload));
 }
 
-function bridgeError(code: string, message: string, suggestions: string[] = []): BridgeErrorResponse {
-  return {
-    ok: false,
-    error: {
-      code,
-      message,
-      details: {},
-      suggestions,
-    },
-  };
-}
-
 function rejectMessage(socket: WebSocket, message: string): void {
-  const error = bridgeError("METHOD_NOT_FOUND", message);
+  const error = createBridgeErrorResponse("METHOD_NOT_FOUND", message);
   sendJson(socket, {
     ...error,
   });
@@ -114,6 +108,19 @@ function isReadOnlyResponse(value: unknown): value is BridgeReadOnlyResponse {
   );
 }
 
+function isHeartbeatMessage(value: unknown): value is BridgeHeartbeatMessage {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return (
+    candidate["type"] === "bridge.heartbeat" &&
+    typeof candidate["sentAt"] === "string" &&
+    typeof candidate["reconnectAttemptCount"] === "number"
+  );
+}
+
 function clearPendingRequests(response: BridgeErrorResponse): void {
   for (const pending of pendingRequests.values()) {
     clearTimeout(pending.timeout);
@@ -123,11 +130,13 @@ function clearPendingRequests(response: BridgeErrorResponse): void {
 }
 
 export function createBridgeNotConnectedError(): BridgeErrorResponse {
-  return bridgeError("BRIDGE_NOT_CONNECTED", "Godot is not connected to the local bridge.", [
-    "Open the Godot project.",
-    "Enable or reload the godot-ai-bridge editor plugin.",
-    `Confirm the plugin can reach ws://${WEBSOCKET_HOST}:${WEBSOCKET_PORT}${WEBSOCKET_PATH}.`,
-  ]);
+  return createBridgeErrorResponse("BRIDGE_NOT_CONNECTED", "Godot is not connected to the local bridge.", {
+    suggestions: [
+      "Open the Godot project.",
+      "Enable or reload the godot-ai-bridge editor plugin.",
+      `Confirm the plugin can reach ws://${WEBSOCKET_HOST}:${WEBSOCKET_PORT}${WEBSOCKET_PATH}.`,
+    ],
+  });
 }
 
 export async function sendReadOnlyBridgeRequest(
@@ -135,7 +144,10 @@ export async function sendReadOnlyBridgeRequest(
   params: Record<string, never> = {},
 ): Promise<Record<string, unknown> | BridgeErrorResponse> {
   if (!isReadOnlyBridgeMethod(method)) {
-    return bridgeError("METHOD_NOT_FOUND", `Unsupported read-only bridge method: ${String(method)}`);
+    return createBridgeErrorResponse(
+      "METHOD_NOT_FOUND",
+      `Unsupported read-only bridge method: ${String(method)}`,
+    );
   }
 
   if (activeSocket === null || activeSocket.readyState !== WebSocket.OPEN || !state.godotConnected) {
@@ -155,7 +167,7 @@ export async function sendReadOnlyBridgeRequest(
   return new Promise((resolve) => {
     const timeout = setTimeout(() => {
       pendingRequests.delete(id);
-      resolve(bridgeError("TIMEOUT", `Timed out waiting for Godot response to ${method}.`));
+      resolve(createBridgeErrorResponse("TIMEOUT", `Timed out waiting for Godot response to ${method}.`));
     }, 5000);
 
     pendingRequests.set(id, { resolve, timeout });
@@ -197,6 +209,12 @@ export function startLocalWebSocketServer(): void {
           responsePayload = JSON.parse(data.toString());
         } catch {
           rejectMessage(socket, "Invalid JSON message.");
+          return;
+        }
+
+        if (isHeartbeatMessage(responsePayload)) {
+          state.lastHeartbeatAt = responsePayload.sentAt;
+          state.reconnectAttemptCount = responsePayload.reconnectAttemptCount;
           return;
         }
 

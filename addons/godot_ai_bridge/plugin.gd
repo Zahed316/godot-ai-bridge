@@ -47,6 +47,11 @@ func _add_websocket_client() -> void:
 	if status_panel != null and status_panel.has_method("set_websocket_endpoint"):
 		status_panel.call("set_websocket_endpoint", websocket_client.call("get_websocket_url"))
 
-func _on_websocket_state_changed(state: String, last_handshake_at: String) -> void:
+func _on_websocket_state_changed(
+	state: String,
+	last_handshake_at: String,
+	last_heartbeat_at: String,
+	reconnect_attempt_count: int
+) -> void:
 	if status_panel != null and status_panel.has_method("set_websocket_state"):
-		status_panel.call("set_websocket_state", state, last_handshake_at)
+		status_panel.call("set_websocket_state", state, last_handshake_at, last_heartbeat_at, reconnect_attempt_count)
